@@ -6,11 +6,11 @@ import { CoursesService } from './courses.service';
     template: `<h2>Courses : {{title}}</h2>
                 <ul>
                     <li *ngFor="let course of courses">{{course}}</li>
-                </ul>          
-    `
+                </ul>`          
 })
 
 export class CoursesComponent {
+
 
     title = "List of courses";
     // courses = ['Course1', 'Course2', 'Course3', 'Course4'];
@@ -33,3 +33,5 @@ export class CoursesComponent {
     }
 
 }
+}
+
