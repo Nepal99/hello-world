@@ -1,12 +1,13 @@
 import { CoursesComponent } from './courses.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { HttpModule } from '@angular/http'
 
 import { AppComponent } from './app.component';
 import { CourseComponent } from './course/course.component';
 import { CoursesService } from './courses.service';
 import { ContactFormComponent } from './contact-form/contact-form.component';
+import { PostsComponent } from './posts/posts.component';
 
 
 @NgModule({
@@ -14,10 +15,12 @@ import { ContactFormComponent } from './contact-form/contact-form.component';
     AppComponent,
     CoursesComponent,
     CourseComponent,
-    ContactFormComponent
+    ContactFormComponent,
+    PostsComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpModule
   ],
   providers: [CoursesService],
   bootstrap: [AppComponent]
