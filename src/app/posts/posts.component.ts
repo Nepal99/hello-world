@@ -8,7 +8,7 @@ import { Http } from '@angular/http';
 })
 export class PostsComponent implements OnInit {
 
-  posts : any[];
+  posts: any[];
   private url = 'https://jsonplaceholder.typicode.com/posts';
 
   constructor(private http: Http) {
@@ -27,11 +27,29 @@ export class PostsComponent implements OnInit {
 
     this.http.post(this.url, JSON.stringify(post))
       .subscribe(response => {
-        post['id']=response.json().id;
+        post['id'] = response.json().id;
         //this.posts.splice(0,0,post);
         this.posts.unshift(post);
-
         console.log(response.json());
+      });
+  };
+
+
+  updatePost(post) {
+
+    /**
+     * put and patch methods are used to update the data.
+     * Put method will take the whole object and update the data.
+     * Patch method will only take the specific object property or few properties.
+     * 
+     *      this.http.put(this.url, JSON.stringify(post))
+        .subscribe(response =>{
+    
+        }); */
+
+    this.http.patch(this.url + '/'+ post.id, JSON.stringify({ isRead: true }))
+      .subscribe(response => {
+        console.log(response);
       })
   }
 
