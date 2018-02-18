@@ -1,11 +1,13 @@
 <p>
   posts works!
 </p>
+<input 
+(keyup.enter)="createPost(title)" 
+class="form-control" 
+type="text"
+#title>
 <ul class="list-group">
-  <li 
-  *ngFor="let post of posts"
-  class="list-group-item"
-  >
-   {{post.title}}
+  <li *ngFor="let post of posts" class="list-group-item">
+    {{post.title}}
   </li>
 </ul>
