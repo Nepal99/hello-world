@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http'
 
+import { PostService } from './services/post.service';
+
 import { AppComponent } from './app.component';
 import { CourseComponent } from './course/course.component';
 import { CoursesService } from './courses.service';
@@ -22,7 +24,9 @@ import { PostsComponent } from './posts/posts.component';
     BrowserModule,
     HttpModule
   ],
-  providers: [CoursesService],
+  providers: [CoursesService,
+    PostService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

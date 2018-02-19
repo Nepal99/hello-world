@@ -1,5 +1,6 @@
+import { PostService } from './../services/post.service';
 import { Component, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
+//  import { Http } from '@angular/http'; //not needed anymore
 
 @Component({
   selector: 'app-posts',
@@ -9,9 +10,16 @@ import { Http } from '@angular/http';
 export class PostsComponent implements OnInit {
 
   posts: any[];
-  private url = 'https://jsonplaceholder.typicode.com/posts';
+  
+  constructor(private service:PostService) {
+  }
 
-  constructor(private http: Http) {
+  ngOnInit() {
+    this.service.getPosts()
+    .subscribe(response => {
+      this.posts = response.json();
+      //console.log(this.posts);
+    });
   }
 
   createPost(input: HTMLInputElement) {
@@ -19,7 +27,7 @@ export class PostsComponent implements OnInit {
     let post = { title: input.value };
     input.value = '';
 
-    this.http.post(this.url, JSON.stringify(post))
+    this.service.createPost(post)
       .subscribe(response => {
         post['id'] = response.json().id;
         //this.posts.splice(0,0,post);
@@ -30,7 +38,6 @@ export class PostsComponent implements OnInit {
 
 
   updatePost(post) {
-
     /**
      * put and patch methods are used to update the data.
      * Put method will take the whole object and update the data.
@@ -41,14 +48,14 @@ export class PostsComponent implements OnInit {
     
         }); */
 
-    this.http.patch(this.url + '/' + post.id, JSON.stringify({ isRead: true }))
+    this.service.updatePost(post)
       .subscribe(response => {
         console.log(response);
       });
     }; 
 
     deletePost(post){
-      this.http.delete(this.url + '/' +post.id)
+     this.service.deletePost(post.id)
       .subscribe(response => {
         let index = this.posts.indexOf(post);
         this.posts.splice(index,1);
@@ -56,12 +63,6 @@ export class PostsComponent implements OnInit {
       })
     }
 
-  ngOnInit() {
-    this.http.get(this.url)
-    .subscribe(response => {
-      this.posts = response.json();
-      //console.log(this.posts);
-    });
-  }
+  
 
 }
