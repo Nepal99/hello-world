@@ -1,5 +1,6 @@
 import { PostService } from './../services/post.service';
 import { Component, OnInit } from '@angular/core';
+import { Response } from '@angular/http/src/static_response';
 //  import { Http } from '@angular/http'; //not needed anymore
 
 @Component({
@@ -16,7 +17,8 @@ export class PostsComponent implements OnInit {
 
   ngOnInit() {
     this.service.getPosts()
-    .subscribe(response => {
+    .subscribe(
+      response => {
       this.posts = response.json();
       //console.log(this.posts);
     }, error => {
@@ -31,15 +33,20 @@ export class PostsComponent implements OnInit {
     input.value = '';
 
     this.service.createPost(post)
-      .subscribe(response => {
+      .subscribe(
+        response => {
         post['id'] = response.json().id;
         //this.posts.splice(0,0,post);
         this.posts.unshift(post);
         console.log(response.json());
       }, 
-      error => {
-        alert('An unexpected error occurred during the post method');
+      (error : Response) => {
+        if(error.status === 400){
+          //  this.form.setErrors(error.json()) //  This is how we can add the custom errors on form.
+        }else{
+          alert('An unexpected error occurred during the post method');
         console.log(error);
+        }
       });
   };
 
@@ -56,7 +63,8 @@ export class PostsComponent implements OnInit {
         }); */
 
     this.service.updatePost(post)
-      .subscribe(response => {
+      .subscribe(
+        response => {
         console.log(response);
       },
     error => {
@@ -67,17 +75,21 @@ export class PostsComponent implements OnInit {
 
     deletePost(post){
      this.service.deletePost(post.id)
-      .subscribe(response => {
+      .subscribe(
+        response => {
         let index = this.posts.indexOf(post);
         this.posts.splice(index,1);
         console.log("post at index " +index + " is deleted.");
       },
-      error => {
-        alert('An unexpected error occurred during the delete method');
+      (error : Response) => {
+        if(error.status === 404){
+          alert('This post already has been deleted');
+        }else{
+          alert('An unexpected error occurred during the delete method');
         console.log(error);
+        } 
       }
-    )
-    }
+    )};
 
   
 
