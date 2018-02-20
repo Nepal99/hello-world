@@ -4,6 +4,7 @@ import { AppError } from './../common/app-error';
 import { PostService } from './../services/post.service';
 import { Component, OnInit } from '@angular/core';
 import { Response } from '@angular/http/src/static_response';
+import 'rxjs/add/observable/throw';
 //  import { Http } from '@angular/http'; //not needed anymore
 
 @Component({
@@ -24,9 +25,6 @@ export class PostsComponent implements OnInit {
       response => {
       this.posts = response.json();
       //console.log(this.posts);
-    }, error => {
-      alert('An unexpected error occurred');
-      console.log(error);
     });
   }
 
@@ -48,8 +46,7 @@ export class PostsComponent implements OnInit {
           //  this.form.setErrors(error.json()) //  This is how we can add the custom errors on form.
            //  this.form.setErrors(error.originalError) //  This is how we can add the custom errors on form.
         }else{
-          alert('An unexpected error occurred during the post method');
-        console.log(error);
+          throw error;
         }
       });
   };
@@ -70,17 +67,13 @@ export class PostsComponent implements OnInit {
       .subscribe(
         response => {
         console.log(response);
-      },
-    error => {
-      alert('An unexpected error occurred during the update(put/patch]) method');
-        console.log(error);
-    });
+      });
     }; 
 
 
     
     deletePost(post){
-     this.service.deletePost(post.id)
+     this.service.deletePost(345)
       .subscribe(
         response => {
         let index = this.posts.indexOf(post);
@@ -91,8 +84,7 @@ export class PostsComponent implements OnInit {
         if(error instanceof NotFoundError){
           alert('This post already has been deleted');
         }else{
-          alert('An unexpected error occurred during the delete method');
-        console.log(error);
+          throw error;
         } 
       }
     )};

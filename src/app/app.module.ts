@@ -1,3 +1,5 @@
+import { ErrorHandler } from '@angular/core';
+import { AppErrorHandler } from './posts/app-error-handler';
 import { CoursesComponent } from './courses.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -25,7 +27,8 @@ import { PostsComponent } from './posts/posts.component';
     HttpModule
   ],
   providers: [CoursesService,
-    PostService
+    PostService,
+    {provide : ErrorHandler, useClass : AppErrorHandler}
   ],
   bootstrap: [AppComponent]
 })
