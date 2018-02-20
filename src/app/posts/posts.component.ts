@@ -1,3 +1,6 @@
+import { BadInput } from './../common/bad-input';
+import { NotFoundError } from './../common/not-found-error';
+import { AppError } from './../common/app-error';
 import { PostService } from './../services/post.service';
 import { Component, OnInit } from '@angular/core';
 import { Response } from '@angular/http/src/static_response';
@@ -40,9 +43,10 @@ export class PostsComponent implements OnInit {
         this.posts.unshift(post);
         console.log(response.json());
       }, 
-      (error : Response) => {
-        if(error.status === 400){
+      (error : AppError) => {
+        if(error instanceof BadInput){
           //  this.form.setErrors(error.json()) //  This is how we can add the custom errors on form.
+           //  this.form.setErrors(error.originalError) //  This is how we can add the custom errors on form.
         }else{
           alert('An unexpected error occurred during the post method');
         console.log(error);
@@ -73,6 +77,8 @@ export class PostsComponent implements OnInit {
     });
     }; 
 
+
+    
     deletePost(post){
      this.service.deletePost(post.id)
       .subscribe(
@@ -81,8 +87,8 @@ export class PostsComponent implements OnInit {
         this.posts.splice(index,1);
         console.log("post at index " +index + " is deleted.");
       },
-      (error : Response) => {
-        if(error.status === 404){
+      (error : AppError) => {
+        if(error instanceof NotFoundError){
           alert('This post already has been deleted');
         }else{
           alert('An unexpected error occurred during the delete method');
